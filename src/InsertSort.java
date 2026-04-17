@@ -3,14 +3,14 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class BubbleSort<T extends Comparable<T>> implements IOrdenador<T>{
+public class InsertSort<T extends Comparable<T>> implements IOrdenador<T>{
 
     private long comparacoes;
     private long movimentacoes;
     private LocalDateTime inicio;
     private LocalDateTime termino;
 
-    public BubbleSort() {
+    public InsertSort() {
         zerarContadores();
     }
 
@@ -32,30 +32,28 @@ public class BubbleSort<T extends Comparable<T>> implements IOrdenador<T>{
 
         inicio = LocalDateTime.now();
 
-        for (int posReferencia = tamanho - 1; posReferencia > 0; posReferencia--) {
-            int trocas = 0;
-            for (int posicao = 0; posicao < posReferencia; posicao++) {
+        for (int posReferencia = 1; posReferencia <= tamanho - 1; posReferencia++) {
+            T valor = dadosOrdenados[posReferencia];
+            movimentacoes++;
+            int j = posReferencia - 1;
+
+            while(j >= 0){
                 comparacoes++;
-                if (comparador.compare(dadosOrdenados[posicao], dadosOrdenados[posicao + 1]) > 0){
-                    swap(posicao, posicao + 1, dadosOrdenados);
-                    trocas++;
+                if(comparador.compare(valor, dadosOrdenados[j]) < 0){
+                    dadosOrdenados[j + 1] = dadosOrdenados[j];
+                    movimentacoes++;
+                    j--;
+                } else {
+                    break;
                 }
             }
-            if(trocas == 0) {
-                posReferencia = 0;
-            }
+
+            dadosOrdenados[j + 1] = valor;
+            movimentacoes++;
         }
         termino = LocalDateTime.now();
 
         return dadosOrdenados;
-    }
-
-    private void swap(int i, int j, T[] vet) {
-        movimentacoes++;
-
-        T temp = vet[i];
-        vet[i] = vet[j];
-        vet[j] = temp;
     }
 
     public long getComparacoes() {

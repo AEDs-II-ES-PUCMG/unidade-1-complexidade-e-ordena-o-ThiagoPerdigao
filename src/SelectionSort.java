@@ -3,14 +3,13 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class BubbleSort<T extends Comparable<T>> implements IOrdenador<T>{
-
+public class SelectionSort<T extends Comparable<T>> implements IOrdenador<T>{
     private long comparacoes;
     private long movimentacoes;
     private LocalDateTime inicio;
     private LocalDateTime termino;
 
-    public BubbleSort() {
+    public SelectionSort() {
         zerarContadores();
     }
 
@@ -32,17 +31,16 @@ public class BubbleSort<T extends Comparable<T>> implements IOrdenador<T>{
 
         inicio = LocalDateTime.now();
 
-        for (int posReferencia = tamanho - 1; posReferencia > 0; posReferencia--) {
-            int trocas = 0;
-            for (int posicao = 0; posicao < posReferencia; posicao++) {
+        for (int posReferencia = 0; posReferencia < tamanho; posReferencia++) {
+            int posMenor = posReferencia;
+            for (int posicao = posReferencia + 1; posicao < tamanho; posicao++) {
                 comparacoes++;
-                if (comparador.compare(dadosOrdenados[posicao], dadosOrdenados[posicao + 1]) > 0){
-                    swap(posicao, posicao + 1, dadosOrdenados);
-                    trocas++;
+                if (comparador.compare(dadosOrdenados[posMenor], dadosOrdenados[posicao]) > 0){
+                    posMenor = posicao;
                 }
             }
-            if(trocas == 0) {
-                posReferencia = 0;
+            if (posMenor != posReferencia) {
+                swap(posReferencia, posMenor, dadosOrdenados);
             }
         }
         termino = LocalDateTime.now();
